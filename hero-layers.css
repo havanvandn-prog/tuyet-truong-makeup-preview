@@ -224,20 +224,21 @@
 
 .contact .booking-form { padding: 16px; }
 .contact .booking-form .form-grid { gap: 8px 12px; }
-.contact .booking-form textarea { height: 48px; min-height: 44px; }
+.contact .booking-form textarea { height: 44px; min-height: 44px; }
 .contact .booking-form .submit-button { margin-top: 10px; }
 .contact .booking-form .deposit-note { margin-top: 7px; padding-top: 6px; }
 
 @media (min-width: 801px) {
   .contact .contact-layout {
     --contact-gap: 80px;
-    gap: var(--contact-gap);
+    --contact-form-width: calc((100% - var(--contact-gap)) / 2.2 * .84);
+    column-gap: calc(var(--contact-gap) - var(--contact-form-width) * .1);
     justify-content: center;
     grid-template-columns:
       minmax(0, calc((100% - var(--contact-gap)) / 2.2))
-      minmax(0, calc((100% - var(--contact-gap)) / 2.2 * .84));
+      minmax(0, calc(var(--contact-form-width) * 1.1));
   }
-  .contact .booking-form input, .contact .booking-form select { padding-block: 7px; }
+  .contact .booking-form input, .contact .booking-form select { min-height: 36px; padding-block: 5px; }
 }
 
 .floating-contact {
