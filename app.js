@@ -5,30 +5,33 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const params = new URLSearchParams(location.search);
   const variants = {
-    tiec: { title: 'Makeup Đi Tiệc\ntại Đà Nẵng', tagline: 'Trong trẻo hay sắc sảo, chọn kiểu hợp bạn', description: 'Tư vấn màu makeup và kiểu tóc phù hợp gương mặt, trang phục và buổi tiệc. Có nhận tận nơi tại Đà Nẵng.', price: 'Makeup tiệc từ 350.000đ', note: 'Chưa gồm tóc · Tổng chi phí được trao đổi trước khi chốt', tab: 'tiec', image: 2, service: 'tiec' },
-    'co-dau': { title: 'Trang Điểm Cô Dâu\ntại Đà Nẵng', tagline: 'Tôn nét riêng trong ngày cưới', description: 'Tuyết Trương trực tiếp thực hiện với 9 năm kinh nghiệm. Tư vấn makeup và tóc hài hòa với gương mặt, áo dài hoặc váy cưới.', price: '1.800.000–2.000.000đ', note: 'Gồm tóc, mi, phụ kiện, tặng lens · Dặm lại tính riêng', tab: 'co-dau', image: 1, service: 'co-dau' },
-    'ky-yeu': { title: 'Makeup Kỷ Yếu\ntại Đà Nẵng', tagline: 'Tươi trẻ, đúng gu cho ngày lưu dấu', description: 'Chọn kiểu makeup phù hợp áo dài, lễ phục và phong cách bộ ảnh. Có lựa chọn makeup riêng hoặc kèm làm tóc.', price: 'Makeup kỷ yếu từ 350.000đ', note: 'Chưa gồm tóc · Có lựa chọn kèm làm tóc', tab: 'ky-yeu', image: 3, service: 'ky-yeu' },
-    'sinh-nhat': { title: 'Makeup Sinh Nhật\ntại Đà Nẵng', tagline: 'Một diện mạo đúng gu cho ngày của bạn', description: 'Từ ngọt ngào đến cá tính, cùng Tuyết Trương chọn kiểu makeup phù hợp trang phục và phong cách buổi sinh nhật.', price: 'Tư vấn giá theo kiểu bạn chọn', note: 'Trao đổi tổng chi phí trước khi chốt lịch', tab: 'tiec', image: 2, service: 'sinh-nhat' },
-    'tan-noi': { title: 'Makeup Tận Nơi\ntại Đà Nẵng', tagline: 'Chọn kiểu bạn thích, trao đổi nơi hẹn', description: 'Nhận makeup tận nơi trong Đà Nẵng. Gửi dịch vụ, địa điểm và giờ cần hoàn thành để được tư vấn lịch và tổng chi phí.', price: 'Báo giá theo dịch vụ & địa điểm', note: 'Trên 4 km từ cơ sở: phí di chuyển 50.000–100.000đ', tab: 'all', image: 0, service: '' }
+    tiec: { title: 'Makeup Đi Tiệc\ntại Đà Nẵng', tagline: 'Trong trẻo hay sắc sảo, chọn kiểu hợp bạn', description: 'Tư vấn màu makeup và kiểu tóc phù hợp gương mặt, trang phục và buổi tiệc. Có nhận tận nơi tại Đà Nẵng.', price: 'Makeup tiệc từ 350.000đ', note: 'Chưa gồm tóc · Tổng chi phí được trao đổi trước khi chốt', image: 2, service: 'tiec' },
+    'co-dau': { title: 'Trang Điểm Cô Dâu\ntại Đà Nẵng', tagline: 'Tôn nét riêng trong ngày cưới', description: 'Tuyết Trương trực tiếp thực hiện với 9 năm kinh nghiệm. Tư vấn makeup và tóc hài hòa với gương mặt, áo dài hoặc váy cưới.', price: '1.800.000–2.000.000đ', note: 'Gồm tóc, mi, phụ kiện, tặng lens · Dặm lại tính riêng', image: 1, service: 'co-dau' },
+    'ky-yeu': { title: 'Makeup Kỷ Yếu\ntại Đà Nẵng', tagline: 'Tươi trẻ, đúng gu cho ngày lưu dấu', description: 'Chọn kiểu makeup phù hợp áo dài, lễ phục và phong cách bộ ảnh. Có lựa chọn makeup riêng hoặc kèm làm tóc.', price: 'Makeup kỷ yếu từ 350.000đ', note: 'Chưa gồm tóc · Có lựa chọn kèm làm tóc', image: 3, service: 'ky-yeu' },
+    'sinh-nhat': { title: 'Makeup Sinh Nhật\ntại Đà Nẵng', tagline: 'Một diện mạo đúng gu cho ngày của bạn', description: 'Từ ngọt ngào đến cá tính, cùng Tuyết Trương chọn kiểu makeup phù hợp trang phục và phong cách buổi sinh nhật.', price: 'Tư vấn giá theo kiểu bạn chọn', note: 'Trao đổi tổng chi phí trước khi chốt lịch', image: 2, service: 'sinh-nhat' },
+    'tan-noi': { title: 'Makeup Tận Nơi\ntại Đà Nẵng', tagline: 'Chọn kiểu bạn thích, trao đổi nơi hẹn', description: 'Nhận makeup tận nơi trong Đà Nẵng. Gửi dịch vụ, địa điểm và giờ cần hoàn thành để được tư vấn lịch và tổng chi phí.', price: 'Báo giá theo dịch vụ & địa điểm', note: 'Trên 4 km từ cơ sở: phí di chuyển 50.000–100.000đ', image: 0, service: '' }
   };
   const photos = [
-    { x: 0, y: 0, name: 'Trong trẻo', description: 'Ảnh minh họa phong cách makeup trong trẻo' },
-    { x: 512, y: 0, name: 'Cô dâu', description: 'Ảnh minh họa makeup cô dâu' },
-    { x: 1024, y: 0, name: 'Sắc sảo', description: 'Ảnh minh họa makeup tiệc – sự kiện' },
-    { x: 0, y: 512, name: 'Kỷ yếu', description: 'Ảnh minh họa makeup kỷ yếu – tốt nghiệp' },
-    { x: 512, y: 512, name: 'Cận màu mắt & lớp nền', description: 'Ảnh minh họa chi tiết màu mắt và lớp nền' }
+    { src: 'assets/shop-soft.webp', name: 'Trong trẻo' },
+    { src: 'assets/shop-bridal.webp', name: 'Cô dâu' },
+    { src: 'assets/shop-event.webp', name: 'Sắc sảo' },
+    { src: 'assets/shop-aodai.webp', name: 'Makeup cùng áo dài' },
+    { src: 'assets/shop-pink.webp', name: 'Tông hồng' },
+    { src: 'assets/shop-bridal-alt.webp', name: 'Cô dâu thanh lịch' },
+    { src: 'assets/shop-aodai-alt.webp', name: 'Tông nhẹ nhàng' },
+    { src: 'assets/shop-event-alt.webp', name: 'Makeup dự tiệc' }
   ];
-  const albumSets = { all: [0, 1, 2], tiec: [0, 2, 4], 'co-dau': [0, 1, 4], 'ky-yeu': [0, 3, 4] };
+  const albumSets = { all: [0, 1, 2], 'trong-treo': [6, 3, 5], 'ngot-ngao': [0, 4, 1], 'sac-sao': [1, 2, 7] };
   let activeTab = 'all';
   let lightboxIndex = 0;
-  let lightboxPhotos = [0, 1, 2, 4];
+  let lightboxPhotos = albumSets.all;
   let lightboxOpener;
   const variantKey = Object.hasOwn(variants, params.get('dich-vu')) ? params.get('dich-vu') : 'all';
   const variant = variants[variantKey];
-  function setPhoto(svg, photoIndex) {
+  function setPhoto(image, photoIndex) {
     const photo = photos[photoIndex];
-    svg.setAttribute('viewBox', `${photo.x} ${photo.y} 512 512`);
-    svg.setAttribute('aria-label', photo.description);
+    image.src = photo.src;
+    image.alt = photo.name;
   }
   function track(event, details = {}) {
     if (config.analyticsEnabled && Array.isArray(window.dataLayer)) {
@@ -50,13 +53,10 @@
       const photoIndex = albumSets[tab][i];
       const photo = photos[photoIndex];
       card.dataset.gallery = String(photoIndex);
-      card.setAttribute('aria-label', `Xem lớn mẫu ${photo.name} — ảnh minh họa`);
-      setPhoto(card.querySelector('svg'), photoIndex);
-      card.querySelector('.photo-caption').replaceChildren(document.createTextNode(photo.name + ' '));
-      const arrow = document.createElement('i'); arrow.textContent = '↗';
-      card.querySelector('.photo-caption').append(arrow);
+      card.setAttribute('aria-label', `Xem lớn mẫu ${photo.name}`);
+      setPhoto(card.querySelector('img'), photoIndex);
     });
-    lightboxPhotos = [...new Set([...albumSets[tab], 4])];
+    lightboxPhotos = albumSets[tab];
   }
   if (variant) {
     $('#hero-title').replaceChildren();
@@ -67,17 +67,20 @@
     $('#hero-tagline').textContent = variant.tagline;
     $('#hero-description').textContent = variant.description;
     $('#hero-price').textContent = variant.price;
-    $('#hero-price-note').textContent = variant.note;
     setPhoto($('#hero-image'), variant.image);
+    if (variant.image !== 0) {
+      $('#hero-portrait').hidden = true;
+      $('#hero-image').removeAttribute('hidden');
+    }
     $('#service').value = variant.service;
     document.title = `${variant.title.replace('\n', ' ')} | Tuyết Trương Makeup`;
     $('meta[name="description"]').content = variant.description;
     $('meta[property="og:title"]').content = document.title;
     $('meta[property="og:description"]').content = variant.description;
     const priority = document.querySelector(`[data-price="${variant.service}"]`);
-    if (priority) { priority.classList.add('is-priority'); $('#price-groups').prepend(priority); }
+    if (priority) { priority.classList.add('is-priority'); priority.parentElement.prepend(priority); }
   }
-  setAlbum(variant?.tab || 'all');
+  setAlbum('all');
   $$('[data-tab]').forEach(button => {
     button.addEventListener('click', () => { setAlbum(button.dataset.tab); track('album_tab_selected', { album: activeTab }); });
     button.addEventListener('keydown', event => {
@@ -90,6 +93,39 @@
       if (target) { event.preventDefault(); setAlbum(target.dataset.tab, true); }
     });
   });
+  const feedbackTrack = $('#feedback-track');
+  const feedbackButtons = $$('[data-feedback-step]');
+  function updateFeedbackControls() {
+    feedbackButtons[0].disabled = feedbackTrack.scrollLeft <= 1;
+    feedbackButtons[1].disabled = feedbackTrack.scrollLeft + feedbackTrack.clientWidth >= feedbackTrack.scrollWidth - 1;
+  }
+  feedbackButtons.forEach(button => button.addEventListener('click', () => {
+    const [first, second] = feedbackTrack.children;
+    feedbackTrack.scrollBy({
+      left: Number(button.dataset.feedbackStep) * (second.offsetLeft - first.offsetLeft)
+    });
+  }));
+  let feedbackDrag;
+  feedbackTrack.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
+    feedbackDrag = { x: event.clientX, left: feedbackTrack.scrollLeft };
+    feedbackTrack.setPointerCapture(event.pointerId);
+    feedbackTrack.classList.add('is-dragging');
+    feedbackTrack.focus({ preventScroll: true });
+    event.preventDefault();
+  });
+  feedbackTrack.addEventListener('pointermove', event => {
+    if (feedbackDrag && event.pointerType === 'mouse') {
+      feedbackTrack.scrollLeft = feedbackDrag.left + feedbackDrag.x - event.clientX;
+    }
+  });
+  feedbackTrack.addEventListener('lostpointercapture', () => {
+    feedbackDrag = null;
+    feedbackTrack.classList.remove('is-dragging');
+  });
+  feedbackTrack.addEventListener('scroll', updateFeedbackControls, { passive: true });
+  window.addEventListener('resize', updateFeedbackControls);
+  updateFeedbackControls();
   const menuButton = $('.menu-toggle');
   function closeMenu() { menuButton.setAttribute('aria-expanded', 'false'); $('#main-nav').classList.remove('is-open'); }
   menuButton.addEventListener('click', () => {
@@ -106,7 +142,7 @@
   function renderLightbox() {
     const index = lightboxPhotos[lightboxIndex];
     setPhoto($('#lightbox-image'), index);
-    $('#lightbox-title').textContent = photos[index].name + ' · Ảnh minh họa';
+    $('#lightbox-title').textContent = photos[index].name;
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
   }
   $$('[data-gallery]').forEach(button => button.addEventListener('click', () => {
@@ -118,6 +154,17 @@
   $('#previous-image').addEventListener('click', () => movePhoto(-1));
   $('#next-image').addEventListener('click', () => movePhoto(1));
   lightbox.addEventListener('keydown', event => { if (event.key === 'ArrowRight') movePhoto(1); if (event.key === 'ArrowLeft') movePhoto(-1); });
+  $('#lightbox-consult').addEventListener('click', () => {
+    const message = $('#message');
+    const note = `Mẫu makeup quan tâm: ${photos[lightboxPhotos[lightboxIndex]].name}`;
+    const nextMessage = message.value ? `${message.value}\n${note}` : note;
+    if (!message.value.split('\n').includes(note) && nextMessage.length <= message.maxLength) {
+      message.value = nextMessage;
+    }
+    lightboxOpener = null;
+    lightbox.close();
+    $('#name').focus({ preventScroll: true });
+  });
   lightbox.addEventListener('close', () => lightboxOpener?.focus());
   $$('dialog').forEach(dialog => {
     dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
@@ -129,7 +176,15 @@
   }
   const zalo = validUrl(config.zaloUrl, ['zalo.me']);
   const messenger = validUrl(config.messengerUrl, ['m.me', 'messenger.com', 'facebook.com']);
-  [[zalo, 'Zalo'], [messenger, 'Messenger']].forEach(([url, label]) => {
+  if (zalo) {
+    const link = $('#quick-consult');
+    link.href = zalo;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', 'Tư vấn qua Zalo');
+    link.addEventListener('click', () => track('contact_click', { channel: 'zalo' }));
+  }
+  [[messenger, 'Messenger']].forEach(([url, label]) => {
     if (!url) return;
     const link = document.createElement('a'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.setAttribute('aria-label', `Liên hệ qua ${label}`);
     const icon = document.createElement('span'); icon.textContent = label === 'Zalo' ? 'Z' : 'M';
@@ -142,23 +197,13 @@
     const mapLink = document.createElement('a'); mapLink.href = maps; mapLink.target = '_blank'; mapLink.rel = 'noopener noreferrer'; mapLink.textContent = 'Mở chỉ đường ↗'; mapLink.className = 'text-link light-link'; $('.contact-copy').append(mapLink);
   }
   $$('a[href^="tel:"]').forEach(link => link.addEventListener('click', () => track('contact_click', { channel: 'phone' })));
-  // Keep the fixed contacts clear of the opening contact strip and booking fields.
-  if ('IntersectionObserver' in window) {
-    const visibility = new Map();
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => visibility.set(entry.target, entry.isIntersecting));
-      $('.floating-contact').hidden = [...visibility.values()].some(Boolean);
-    });
-    observer.observe($('.hero'));
-    observer.observe($('#lien-he'));
-  }
   const dateInput = $('#date');
   function today() { const date = new Date(); return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
   dateInput.min = today();
   const form = $('#booking-form');
   let endpoint = '';
   try { if (config.bookingEndpoint) { const url = new URL(config.bookingEndpoint, location.href); if (url.protocol === 'https:' || (url.origin === location.origin && ['localhost', '127.0.0.1'].includes(url.hostname))) endpoint = url.href; } } catch { /* Keep manual contact mode for invalid configuration. */ }
-  if (endpoint) { $('#submit-label').textContent = 'Gửi yêu cầu'; $('#form-help').textContent = 'Gửi yêu cầu chưa giữ lịch. Tuyết Trương sẽ liên hệ để xác nhận.'; }
+  if (endpoint) $('#submit-label').textContent = 'Gửi yêu cầu';
   form.addEventListener('submit', async event => {
     event.preventDefault();
     if (form.dataset.submitting === 'true') return;
