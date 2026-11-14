@@ -24,7 +24,7 @@
   const albumSets = { all: [0, 1, 2], 'trong-treo': [6, 3, 5], 'ngot-ngao': [0, 4, 1], 'sac-sao': [1, 2, 7] };
   let activeTab = 'all';
   let lightboxIndex = 0;
-  let lightboxPhotos = albumSets.all;
+  let lightboxPhotos = [];
   let lightboxOpener;
   const variantKey = Object.hasOwn(variants, params.get('dich-vu')) ? params.get('dich-vu') : 'all';
   const variant = variants[variantKey];
@@ -56,7 +56,7 @@
       card.setAttribute('aria-label', `Xem lớn mẫu ${photo.name}`);
       setPhoto(card.querySelector('img'), photoIndex);
     });
-    lightboxPhotos = albumSets[tab];
+
   }
   if (variant) {
     $('#hero-title').replaceChildren();
@@ -94,17 +94,32 @@
     });
   });
   const feedbackTrack = $('#feedback-track');
-  const feedbackButtons = $$('[data-feedback-step]');
-  function updateFeedbackControls() {
-    feedbackButtons[0].disabled = feedbackTrack.scrollLeft <= 1;
-    feedbackButtons[1].disabled = feedbackTrack.scrollLeft + feedbackTrack.clientWidth >= feedbackTrack.scrollWidth - 1;
+  const feedbackSlides = [...feedbackTrack.children];
+  feedbackSlides.forEach(slide => {
+    const copy = slide.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    feedbackTrack.append(copy);
+  });
+  const feedbackOffset = index => feedbackTrack.children[index].offsetLeft - feedbackTrack.children[0].offsetLeft;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  function moveFeedback(direction) {
+    const step = feedbackOffset(1);
+    const total = feedbackSlides.length;
+    let index = Math.round(feedbackTrack.scrollLeft / step) % total;
+    if (index === 0 && direction < 0) feedbackTrack.scrollLeft = feedbackOffset(total);
+    else if (feedbackTrack.scrollLeft >= feedbackOffset(total) - 1) feedbackTrack.scrollLeft = feedbackOffset(index);
+    index = Math.round(feedbackTrack.scrollLeft / step);
+    feedbackTrack.scrollTo({ left: feedbackOffset(index + direction), behavior: reducedMotion.matches ? 'instant' : 'smooth' });
   }
-  feedbackButtons.forEach(button => button.addEventListener('click', () => {
-    const [first, second] = feedbackTrack.children;
-    feedbackTrack.scrollBy({
-      left: Number(button.dataset.feedbackStep) * (second.offsetLeft - first.offsetLeft)
-    });
+  $$('[data-feedback-step]').forEach(button => button.addEventListener('click', () => {
+    moveFeedback(Number(button.dataset.feedbackStep));
   }));
+  const feedbackSlider = feedbackTrack.closest('.feedback-slider');
+  setInterval(() => {
+    const rect = feedbackTrack.getBoundingClientRect();
+    if (!reducedMotion.matches && !document.hidden && rect.bottom > 0 && rect.top < innerHeight &&
+        !feedbackSlider.matches(':hover, :focus-within')) moveFeedback(1);
+  }, 4000);
   let feedbackDrag;
   feedbackTrack.addEventListener('pointerdown', event => {
     if (event.pointerType !== 'mouse' || event.button !== 0) return;
@@ -123,9 +138,8 @@
     feedbackDrag = null;
     feedbackTrack.classList.remove('is-dragging');
   });
-  feedbackTrack.addEventListener('scroll', updateFeedbackControls, { passive: true });
-  window.addEventListener('resize', updateFeedbackControls);
-  updateFeedbackControls();
+  const background = params.get('nen-form');
+  if (['voan', 'studio', 'hau-truong'].includes(background)) $('#lien-he').dataset.background = background;
   const menuButton = $('.menu-toggle');
   function closeMenu() { menuButton.setAttribute('aria-expanded', 'false'); $('#main-nav').classList.remove('is-open'); }
   menuButton.addEventListener('click', () => {
@@ -140,23 +154,41 @@
   $$('[data-service]').forEach(link => link.addEventListener('click', () => { $('#service').value = link.dataset.service; }));
   const lightbox = $('#lightbox');
   function renderLightbox() {
-    const index = lightboxPhotos[lightboxIndex];
-    setPhoto($('#lightbox-image'), index);
-    $('#lightbox-title').textContent = photos[index].name;
+    const photo = lightboxPhotos[lightboxIndex];
+    $('#lightbox-image').src = photo.src;
+    $('#lightbox-image').alt = photo.name;
+    $('#lightbox-title').textContent = photo.name;
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
   }
   $$('[data-gallery]').forEach(button => button.addEventListener('click', () => {
     lightboxOpener = button;
-    lightboxIndex = Math.max(0, lightboxPhotos.indexOf(Number(button.dataset.gallery)));
+    lightboxPhotos = albumSets[activeTab].map(index => photos[index]);
+    lightboxIndex = Math.max(0, albumSets[activeTab].indexOf(Number(button.dataset.gallery)));
     renderLightbox(); lightbox.showModal();
+  }));
+  const occasionCards = $$('.occasion-card');
+  occasionCards.forEach((card, index) => card.addEventListener('click', event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    lightboxOpener = card;
+    lightboxPhotos = occasionCards.map(item => ({
+      src: item.querySelector('img').src,
+      name: item.querySelector('.occasion-caption').textContent.trim(),
+      service: item.dataset.service
+    }));
+    lightboxIndex = index;
+    renderLightbox();
+    lightbox.showModal();
   }));
   function movePhoto(direction) { lightboxIndex = (lightboxIndex + direction + lightboxPhotos.length) % lightboxPhotos.length; renderLightbox(); }
   $('#previous-image').addEventListener('click', () => movePhoto(-1));
   $('#next-image').addEventListener('click', () => movePhoto(1));
   lightbox.addEventListener('keydown', event => { if (event.key === 'ArrowRight') movePhoto(1); if (event.key === 'ArrowLeft') movePhoto(-1); });
   $('#lightbox-consult').addEventListener('click', () => {
+    const selectedPhoto = lightboxPhotos[lightboxIndex];
+    if (selectedPhoto.service) $('#service').value = selectedPhoto.service;
     const message = $('#message');
-    const note = `Mẫu makeup quan tâm: ${photos[lightboxPhotos[lightboxIndex]].name}`;
+    const note = `Mẫu makeup quan tâm: ${lightboxPhotos[lightboxIndex].name}`;
     const nextMessage = message.value ? `${message.value}\n${note}` : note;
     if (!message.value.split('\n').includes(note) && nextMessage.length <= message.maxLength) {
       message.value = nextMessage;

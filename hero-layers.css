@@ -371,15 +371,13 @@
   .artist .artist-photo { width: min(94%, 400px); margin: 26px auto 0; }
 }
 
-#feedback { padding-block: 28px; }
+#feedback { padding-block: 40px; border: 0; background: transparent; }
 #feedback .feedback-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2.7fr);
   align-items: center;
   gap: clamp(20px, 4vw, 56px);
-  padding: clamp(16px, 3vw, 42px);
-  background: #f1e7d7;
-  border-radius: 24px;
+
 }
 #feedback-title { margin: 0; }
 .feedback-slider { min-width: 0; }
@@ -390,23 +388,27 @@
   grid-auto-columns: calc((100% - 2 * var(--feedback-gap)) / 2.5);
   gap: var(--feedback-gap);
   overflow-x: auto;
+  scrollbar-width: none;
   scroll-snap-type: x mandatory;
   padding: 0 0 8px;
   margin: 0;
   list-style: none;
 }
+.feedback-track::-webkit-scrollbar { display: none; }
 .feedback-slot {
+  position: relative;
   display: grid;
   place-items: center;
   aspect-ratio: 1.4;
   color: #705749;
-  border: 1px dashed #bd9e81;
+  overflow: hidden;
   border-radius: 12px;
   background: #faf4e9;
   scroll-snap-align: start;
   font-size: 12px;
 }
-.feedback-slot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.feedback-slot img { position: absolute; width: 100%; height: 100%; object-fit: contain; }
+.feedback-slot span { position: absolute; top: 6px; left: 6px; padding: 3px 7px; border-radius: 6px; background: #faf4e9; }
 .feedback-controls { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
 .feedback-controls button {
   width: 44px;
@@ -424,3 +426,13 @@
 
 .feedback-track { cursor: grab; }
 .feedback-track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+
+#lien-he[data-background="voan"] {
+  background: linear-gradient(#462a1e22, #462a1e22), #462a1e url('assets/form-voan.webp') left bottom / cover no-repeat;
+}
+#lien-he[data-background="studio"] {
+  background: radial-gradient(ellipse at 70% 45%, #815334 0%, #553323 39%, #3a2319 82%);
+}
+#lien-he[data-background="hau-truong"] {
+  background: linear-gradient(#40271d55, #40271d33), #462a1e url('assets/form-hau-truong.webp') left bottom / cover no-repeat;
+}
