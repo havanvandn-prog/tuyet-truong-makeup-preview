@@ -114,7 +114,7 @@
   $$('[data-feedback-step]').forEach(button => button.addEventListener('click', () => {
     moveFeedback(Number(button.dataset.feedbackStep));
   }));
-  const feedbackSlider = feedbackTrack.closest('.feedback-slider');
+  const feedbackSlider = feedbackTrack.closest('#feedback');
   setInterval(() => {
     const rect = feedbackTrack.getBoundingClientRect();
     if (!reducedMotion.matches && !document.hidden && rect.bottom > 0 && rect.top < innerHeight &&
@@ -235,7 +235,6 @@
   const form = $('#booking-form');
   let endpoint = '';
   try { if (config.bookingEndpoint) { const url = new URL(config.bookingEndpoint, location.href); if (url.protocol === 'https:' || (url.origin === location.origin && ['localhost', '127.0.0.1'].includes(url.hostname))) endpoint = url.href; } } catch { /* Keep manual contact mode for invalid configuration. */ }
-  if (endpoint) $('#submit-label').textContent = 'Gửi yêu cầu';
   form.addEventListener('submit', async event => {
     event.preventDefault();
     if (form.dataset.submitting === 'true') return;
@@ -247,14 +246,12 @@
     const phone = String(fd.get('phone')).replace(/[\s().-]/g, '');
     if (!/^(?:0\d{9}|\+84\d{9})$/.test(phone)) { status.textContent = 'Bạn kiểm tra lại số điện thoại nhé (10 số hoặc +84).'; $('#phone').focus(); return; }
     if (String(fd.get('date')) < today()) { status.textContent = 'Vui lòng chọn ngày từ hôm nay trở đi.'; dateInput.focus(); return; }
-    const payload = { name: String(fd.get('name')).trim(), phone, service: String(fd.get('service')), date: String(fd.get('date')), time: String(fd.get('time')), location: String(fd.get('location')).trim(), message: String(fd.get('message')).trim(), landing_variant: variantKey };
+    const payload = { name: String(fd.get('name')).trim(), phone, service: String(fd.get('service')), date: String(fd.get('date')), message: String(fd.get('message')).trim(), landing_variant: variantKey };
     if (!payload.name) { status.textContent = 'Bạn nhập tên để Tuyết tiện xưng hô nhé.'; $('#name').focus(); return; }
     const selectedService = $('#service').selectedOptions[0].textContent;
     if (!endpoint) {
       const date = payload.date.split('-').reverse().join('/');
       const lines = [`Chào Tuyết, mình muốn tư vấn lịch makeup.`, `Họ tên: ${payload.name}`, `Điện thoại: ${payload.phone}`, `Dịch vụ: ${selectedService}`, `Ngày cần makeup: ${date}`];
-      if (payload.time) lines.push(`Giờ cần hoàn thành: ${payload.time}`);
-      if (payload.location) lines.push(`Địa điểm: ${payload.location}`);
       if (payload.message) lines.push(`Mong muốn: ${payload.message}`);
       $('#request-text').value = lines.join('\n'); $('#copy-status').textContent = ''; $('#request-dialog').showModal();
       return;
@@ -269,7 +266,7 @@
       status.textContent = 'Đã nhận yêu cầu của bạn! Tuyết Trương sẽ liên hệ tư vấn và xác nhận lịch.'; status.classList.add('success');
       track('generate_lead', { service: payload.service }); form.reset(); if (variant?.service) $('#service').value = variant.service;
     } catch { status.textContent = 'Chưa xác nhận gửi thành công. Vui lòng gọi 0776 992 703 để kiểm tra trước khi gửi lại.'; }
-    finally { clearTimeout(timeout); form.dataset.submitting = 'false'; button.disabled = false; $('#submit-label').textContent = 'Gửi yêu cầu'; }
+    finally { clearTimeout(timeout); form.dataset.submitting = 'false'; button.disabled = false; $('#submit-label').textContent = 'Đăng Ký Ngay'; }
   });
   $('#copy-request').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText($('#request-text').value); $('#copy-status').textContent = 'Đã sao chép. Bạn gửi nội dung qua kênh đang liên hệ với Tuyết nhé.'; }
