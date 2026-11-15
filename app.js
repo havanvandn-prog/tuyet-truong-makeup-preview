@@ -198,7 +198,7 @@
     $('#name').focus({ preventScroll: true });
   });
   lightbox.addEventListener('close', () => lightboxOpener?.focus());
-  $$('dialog').forEach(dialog => {
+  $$('#lightbox, #request-dialog').forEach(dialog => {
     dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
   });
@@ -288,30 +288,8 @@
     const lightbox = document.getElementById("gallery-lightbox");
     if (!track || !marquee) return;
 
-    const albumPhotos = [
-      ["assets/makeup-album-04.webp", 960, 1440],
-      ["assets/makeup-album-05.webp", 960, 1440],
-      ["assets/makeup-album-06.webp", 960, 1440],
-      ["assets/makeup-album-07.webp", 960, 1440],
-      ["assets/makeup-album-08.webp", 960, 1440],
-      ["assets/makeup-album-09.webp", 960, 1440],
-      ["assets/makeup-album-10.webp", 960, 1440],
-      ["assets/makeup-album-11.webp", 960, 1440],
-      ["assets/makeup-album-12.webp", 960, 1440],
-      ["assets/makeup-album-13.webp", 960, 1440],
-      ["assets/makeup-album-14.webp", 960, 1440],
-      ["assets/makeup-album-15.webp", 960, 1440],
-      ["assets/makeup-album-16.webp", 960, 1440],
-      ["assets/makeup-album-17.webp", 960, 1440],
-      ["assets/makeup-album-18.webp", 960, 1440],
-      ["assets/makeup-album-19.webp", 960, 1440],
-      ["assets/makeup-album-20.webp", 960, 1440],
-      ["assets/makeup-album-21.webp", 960, 1440],
-      ["assets/makeup-album-01.webp", 1100, 1440],
-      ["assets/makeup-album-02.webp", 810, 1440],
-      ["assets/makeup-album-03.webp", 817, 1440]
-    ];
-    const COUNT = albumPhotos.length;
+    const slides = [...track.children];
+    const COUNT = slides.length;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let loopWidth = 0;
@@ -325,14 +303,13 @@
       return prefersReducedMotion ? 0 : 1.5;
     }
 
-    const slides = (duplicate) => albumPhotos.map(([src, width, height], index) => {
-      const loading = !duplicate && index < 5 ? "eager" : "lazy";
-      const keyboard = duplicate ? ' tabindex="-1" aria-hidden="true"' : "";
-      return `<button type="button" class="photo-marquee-slide" style="aspect-ratio:${width} / ${height}" data-gallery-index="${index + 1}" aria-label="Xem ảnh ${index + 1}"${keyboard}>
-        <img src="${src}" alt="" loading="${loading}" decoding="async" draggable="false">
-      </button>`;
-    }).join("");
-    track.innerHTML = slides(false) + slides(true);
+    slides.forEach(slide => {
+      const copy = slide.cloneNode(true);
+      copy.tabIndex = -1;
+      copy.setAttribute("aria-hidden", "true");
+      copy.firstElementChild.loading = "lazy";
+      track.append(copy);
+    });
 
     function measureLoop() {
       const first = track.firstElementChild;
@@ -436,7 +413,7 @@
     function showLightbox(index) {
       if (!lightbox || !lbImg) return;
       lightboxIndex = ((index - 1) % COUNT + COUNT) % COUNT;
-      lbImg.src = albumPhotos[lightboxIndex][0];
+      lbImg.src = slides[lightboxIndex].firstElementChild.src;
       lbImg.alt = `Ảnh makeup ${lightboxIndex + 1}`;
       if (lbCap) lbCap.textContent = `${lightboxIndex + 1} / ${COUNT}`;
       if (!lightbox.open) lightbox.showModal();
