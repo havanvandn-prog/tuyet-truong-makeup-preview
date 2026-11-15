@@ -21,8 +21,6 @@
     { src: 'assets/shop-aodai-alt.webp', name: 'Tông nhẹ nhàng' },
     { src: 'assets/shop-event-alt.webp', name: 'Makeup dự tiệc' }
   ];
-  const albumSets = { all: [0, 1, 2], 'trong-treo': [6, 3, 5], 'ngot-ngao': [0, 4, 1], 'sac-sao': [1, 2, 7] };
-  let activeTab = 'all';
   let lightboxIndex = 0;
   let lightboxPhotos = [];
   let lightboxOpener;
@@ -37,26 +35,6 @@
     if (config.analyticsEnabled && Array.isArray(window.dataLayer)) {
       window.dataLayer.push({ event, landing_variant: variantKey, ...details });
     }
-  }
-  function setAlbum(tab, focus = false) {
-    if (!Object.hasOwn(albumSets, tab)) tab = 'all';
-    activeTab = tab;
-    $$('[data-tab]').forEach(button => {
-      const selected = button.dataset.tab === tab;
-      button.setAttribute('aria-selected', String(selected));
-      button.tabIndex = selected ? 0 : -1;
-      if (selected && focus) button.focus();
-    });
-    $('#album-panel').setAttribute('aria-labelledby', `tab-${tab}`);
-    $('#album-panel').classList.toggle('is-filtered', tab !== 'all');
-    $$('.gallery-card').forEach((card, i) => {
-      const photoIndex = albumSets[tab][i];
-      const photo = photos[photoIndex];
-      card.dataset.gallery = String(photoIndex);
-      card.setAttribute('aria-label', `Xem lớn mẫu ${photo.name}`);
-      setPhoto(card.querySelector('img'), photoIndex);
-    });
-
   }
   if (variant) {
     $('#hero-title').replaceChildren();
@@ -80,19 +58,6 @@
     const priority = document.querySelector(`[data-price="${variant.service}"]`);
     if (priority) { priority.classList.add('is-priority'); priority.parentElement.prepend(priority); }
   }
-  setAlbum('all');
-  $$('[data-tab]').forEach(button => {
-    button.addEventListener('click', () => { setAlbum(button.dataset.tab); track('album_tab_selected', { album: activeTab }); });
-    button.addEventListener('keydown', event => {
-      const tabs = $$('[data-tab]'); const i = tabs.indexOf(button);
-      let target;
-      if (event.key === 'ArrowRight') target = tabs[(i + 1) % tabs.length];
-      if (event.key === 'ArrowLeft') target = tabs[(i - 1 + tabs.length) % tabs.length];
-      if (event.key === 'Home') target = tabs[0];
-      if (event.key === 'End') target = tabs[tabs.length - 1];
-      if (target) { event.preventDefault(); setAlbum(target.dataset.tab, true); }
-    });
-  });
   const feedbackTrack = $('#feedback-track');
   const feedbackSlides = [...feedbackTrack.children];
   feedbackSlides.forEach(slide => {
@@ -160,12 +125,6 @@
     $('#lightbox-title').textContent = photo.name;
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
   }
-  $$('[data-gallery]').forEach(button => button.addEventListener('click', () => {
-    lightboxOpener = button;
-    lightboxPhotos = albumSets[activeTab].map(index => photos[index]);
-    lightboxIndex = Math.max(0, albumSets[activeTab].indexOf(Number(button.dataset.gallery)));
-    renderLightbox(); lightbox.showModal();
-  }));
   const occasionCards = $$('.occasion-card');
   occasionCards.forEach((card, index) => card.addEventListener('click', event => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
@@ -272,4 +231,220 @@
     try { await navigator.clipboard.writeText($('#request-text').value); $('#copy-status').textContent = 'Đã sao chép. Bạn gửi nội dung qua kênh đang liên hệ với Tuyết nhé.'; }
     catch { $('#request-text').focus(); $('#request-text').select(); $('#copy-status').textContent = 'Bạn nhấn giữ hoặc Ctrl+C để sao chép nội dung đã chọn.'; }
   });
+
+  // Photo marquee and lightbox from the Thao Eyelash landing page.
+  (function () {
+    const track = document.getElementById("photo-marquee-track");
+    const marquee = document.querySelector(".photo-marquee");
+    const lightbox = document.getElementById("gallery-lightbox");
+    if (!track || !marquee) return;
+
+    const albumPhotos = [
+      ["assets/makeup-album-04.webp", 960, 1440],
+      ["assets/makeup-album-05.webp", 960, 1440],
+      ["assets/makeup-album-06.webp", 960, 1440],
+      ["assets/makeup-album-07.webp", 960, 1440],
+      ["assets/makeup-album-08.webp", 960, 1440],
+      ["assets/makeup-album-09.webp", 960, 1440],
+      ["assets/makeup-album-10.webp", 960, 1440],
+      ["assets/makeup-album-11.webp", 960, 1440],
+      ["assets/makeup-album-12.webp", 960, 1440],
+      ["assets/makeup-album-13.webp", 960, 1440],
+      ["assets/makeup-album-14.webp", 960, 1440],
+      ["assets/makeup-album-15.webp", 960, 1440],
+      ["assets/makeup-album-16.webp", 960, 1440],
+      ["assets/makeup-album-17.webp", 960, 1440],
+      ["assets/makeup-album-18.webp", 960, 1440],
+      ["assets/makeup-album-19.webp", 960, 1440],
+      ["assets/makeup-album-20.webp", 960, 1440],
+      ["assets/makeup-album-21.webp", 960, 1440],
+      ["assets/makeup-album-01.webp", 1100, 1440],
+      ["assets/makeup-album-02.webp", 810, 1440],
+      ["assets/makeup-album-03.webp", 817, 1440]
+    ];
+    const COUNT = albumPhotos.length;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let loopWidth = 0;
+    let offsetPx = 0;
+    let lightboxIndex = 0;
+
+    const lbImg = lightbox?.querySelector(".gallery-lightbox__img");
+    const lbCap = lightbox?.querySelector(".gallery-lightbox__caption");
+
+    function speedPxPerFrame() {
+      return prefersReducedMotion ? 0 : 1.5;
+    }
+
+    const slides = (duplicate) => albumPhotos.map(([src, width, height], index) => {
+      const loading = !duplicate && index < 5 ? "eager" : "lazy";
+      const keyboard = duplicate ? ' tabindex="-1" aria-hidden="true"' : "";
+      return `<button type="button" class="photo-marquee-slide" style="aspect-ratio:${width} / ${height}" data-gallery-index="${index + 1}" aria-label="Xem ảnh ${index + 1}"${keyboard}>
+        <img src="${src}" alt="" loading="${loading}" decoding="async" draggable="false">
+      </button>`;
+    }).join("");
+    track.innerHTML = slides(false) + slides(true);
+
+    function measureLoop() {
+      const first = track.firstElementChild;
+      const duplicate = track.children[COUNT];
+      loopWidth = duplicate.getBoundingClientRect().left - first.getBoundingClientRect().left;
+      if (loopWidth > 0) {
+        offsetPx = ((offsetPx % loopWidth) + loopWidth) % loopWidth;
+      }
+    }
+
+    function applyOffset() {
+      track.style.transform = `translate3d(${-offsetPx}px,0,0)`;
+    }
+
+    let dragPending = false;
+    let isDragging = false;
+    let dragMoved = false;
+    let dragStartX = 0;
+    let dragStartOffset = 0;
+    let pointerDownTarget = null;
+
+    function releaseCapture(e) {
+      if (!marquee.hasPointerCapture(e.pointerId)) return;
+      try {
+        marquee.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
+
+    function finishPointerInteraction(e) {
+      if (!dragPending && !isDragging) return;
+      const tap = e.type === "pointerup" && dragPending && !dragMoved;
+      const slide = pointerDownTarget?.closest?.(".photo-marquee-slide[data-gallery-index]");
+      isDragging = false;
+      dragPending = false;
+      dragMoved = false;
+      pointerDownTarget = null;
+      marquee.classList.remove("is-paused", "is-dragging");
+      releaseCapture(e);
+      if (tap && slide) showLightbox(Number(slide.dataset.galleryIndex));
+    }
+
+    marquee.addEventListener("pointerdown", (e) => {
+      if (!e.isPrimary || e.button !== 0) return;
+      dragPending = true;
+      isDragging = false;
+      dragMoved = false;
+      dragStartX = e.clientX;
+      dragStartOffset = offsetPx;
+      pointerDownTarget = e.target;
+      marquee.classList.add("is-paused");
+      try {
+        marquee.setPointerCapture(e.pointerId);
+      } catch (_) {}
+    });
+
+    marquee.addEventListener("pointermove", (e) => {
+      if (!dragPending && !isDragging) return;
+      const dx = e.clientX - dragStartX;
+      if (!isDragging && Math.abs(dx) > 4) {
+        isDragging = true;
+        dragMoved = true;
+        marquee.classList.add("is-dragging");
+      }
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+      offsetPx = dragStartOffset - dx;
+      if (loopWidth > 0) offsetPx = ((offsetPx % loopWidth) + loopWidth) % loopWidth;
+      applyOffset();
+    });
+
+    marquee.addEventListener("pointerup", finishPointerInteraction);
+    marquee.addEventListener("pointercancel", finishPointerInteraction);
+    marquee.addEventListener("lostpointercapture", (e) => {
+      if (dragPending || isDragging) finishPointerInteraction(e);
+    });
+
+    function remeasure() {
+      requestAnimationFrame(measureLoop);
+    }
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => requestAnimationFrame(remeasure));
+      ro.observe(marquee);
+    }
+    window.addEventListener("resize", () => requestAnimationFrame(remeasure), { passive: true });
+
+    function tick() {
+      if (!marquee.classList.contains("is-paused") && !track.querySelector(":focus-visible") && loopWidth > 0) {
+        offsetPx += speedPxPerFrame();
+        while (offsetPx >= loopWidth) offsetPx -= loopWidth;
+        applyOffset();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(() => {
+      measureLoop();
+      requestAnimationFrame(tick);
+    });
+
+    function showLightbox(index) {
+      if (!lightbox || !lbImg) return;
+      lightboxIndex = ((index - 1) % COUNT + COUNT) % COUNT;
+      lbImg.src = albumPhotos[lightboxIndex][0];
+      lbImg.alt = `Ảnh makeup ${lightboxIndex + 1}`;
+      if (lbCap) lbCap.textContent = `${lightboxIndex + 1} / ${COUNT}`;
+      if (!lightbox.open) lightbox.showModal();
+    }
+
+    track.addEventListener("click", (event) => {
+      const slide = event.target.closest("[data-gallery-index]");
+      if (event.detail === 0 && slide) showLightbox(Number(slide.dataset.galleryIndex));
+    });
+
+    track.addEventListener("focusin", (event) => {
+      const slide = event.target.closest("[data-gallery-index]");
+      if (slide?.matches(":focus-visible")) {
+        marquee.scrollLeft = 0;
+        offsetPx = slide.offsetLeft;
+        applyOffset();
+      }
+    });
+
+    function stepLightbox(delta) {
+      showLightbox(lightboxIndex + 1 + delta);
+    }
+
+    document.querySelectorAll("[data-close-gallery-lightbox]").forEach((btn) => {
+      btn.addEventListener("click", () => lightbox?.close());
+    });
+
+    lightbox?.querySelector("[data-gallery-prev]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stepLightbox(-1);
+    });
+
+    lightbox?.querySelector("[data-gallery-next]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stepLightbox(1);
+    });
+
+    lightbox?.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      lightbox.close();
+    });
+
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox?.open) return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        stepLightbox(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        stepLightbox(1);
+      } else if (e.key === "Escape") {
+        lightbox.close();
+      }
+    });
+  })();
 })();

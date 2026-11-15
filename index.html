@@ -17,9 +17,9 @@
   <script src="config.js" defer></script>
   <script src="app.js" defer></script>
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main">Đến nội dung chính</a>
-  <header class="site-header" id="top">
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Tuyết Trương Makeup — Trang chủ"><span class="monogram" aria-hidden="true">T<span>t</span><i>✧</i></span><span class="brand-name">TUYETTRUONG<small>MAKE UP</small></span></a>
       <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Mở menu"><span></span><span></span></button>
@@ -33,13 +33,19 @@
       <div class="container hero-inner"><div class="hero-copy"><p class="eyebrow light">MAKEUP ARTISTRY · ĐÀ NẴNG</p><h1 id="hero-title"><span class="hero-title-line">Dịch vụ Makeup</span> <br><span class="hero-title-line">tại Đà Nẵng</span></h1><p class="hero-tagline" id="hero-tagline">Đúng gu bạn thích, tôn nét riêng</p><p class="hero-description" id="hero-description">Makeup tiệc, sự kiện, kỷ yếu và cô dâu. Tư vấn theo gương mặt, trang phục và phong cách bạn yêu thích.</p><div class="hero-price"><span id="hero-price">Makeup tiệc từ <strong>350.000đ</strong></span></div><div class="button-row"><a class="button button-cream" href="#lien-he">Nhận tư vấn</a><a class="button button-outline-light" href="#album">Xem mẫu makeup</a></div></div></div>
     </section>
 
-    <section class="album section-pad" id="album" aria-labelledby="album-title">
-      <div class="container"><div class="section-top"><div><p class="eyebrow">THE BEAUTY GALLERY</p><h2 id="album-title">Tìm kiểu makeup bạn thích</h2><p class="album-description">Trong trẻo, ngọt ngào hay sắc sảo? Cùng tìm một diện mạo thật đúng gu.</p></div><div class="album-intro"><div class="album-tabs" role="tablist" aria-label="Album theo gu makeup"><button type="button" role="tab" id="tab-all" aria-selected="true" aria-controls="album-panel" data-tab="all">Tất cả</button><button type="button" role="tab" id="tab-trong-treo" aria-selected="false" aria-controls="album-panel" tabindex="-1" data-tab="trong-treo">Trong trẻo</button><button type="button" role="tab" id="tab-ngot-ngao" aria-selected="false" aria-controls="album-panel" tabindex="-1" data-tab="ngot-ngao">Ngọt ngào</button><button type="button" role="tab" id="tab-sac-sao" aria-selected="false" aria-controls="album-panel" tabindex="-1" data-tab="sac-sao">Sắc sảo</button></div></div></div>
-      <div class="gallery-collage" id="album-panel" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
-        <button class="gallery-card gallery-left" data-gallery="0" aria-label="Xem lớn mẫu Trong trẻo"><span class="photo"><img src="assets/shop-soft.webp" alt="Makeup tông hồng" loading="lazy"></span></button>
-        <button class="gallery-card gallery-main" data-gallery="1" aria-label="Xem lớn mẫu Cô dâu"><span class="photo"><img src="assets/shop-bridal.webp" alt="Makeup cô dâu" loading="lazy"></span></button>
-        <button class="gallery-card gallery-right" data-gallery="2" aria-label="Xem lớn mẫu Sắc sảo"><span class="photo"><img src="assets/shop-event.webp" alt="Makeup dự tiệc" loading="lazy"></span></button>
-      </div></div>
+    <section id="album" class="split-portfolio-section" aria-labelledby="album-title">
+        <div class="portfolio-content-side">
+            <div class="portfolio-text-box">
+                <h2 class="portfolio-title" id="album-title">
+                    Album makeup
+                </h2>
+            </div>
+        </div>
+        <div class="portfolio-image-side">
+            <div class="photo-marquee" role="group" aria-roledescription="băng chuyền" aria-label="Ảnh makeup">
+                <div class="photo-marquee-track" id="photo-marquee-track"></div>
+            </div>
+        </div>
     </section>
 
     <section class="why section-pad" aria-labelledby="why-title"><div class="container why-layout"><div><p class="eyebrow">BEAUTY, YOUR WAY</p><h2 id="why-title">Đúng gu bạn thích,<br>hợp nét riêng</h2></div><div class="benefits"><article><h3>Chọn kiểu<br>cùng bạn</h3><p>Trao đổi mẫu yêu thích, trang phục và dịp tham dự trước khi bắt đầu.</p></article><article><h3>Tư vấn theo<br>gương mặt</h3><p>Cân nhắc đường nét và sắc độ da để chọn màu makeup phù hợp.</p></article><article><h3>Chăm chút<br>lớp nền</h3><p>Xem tình trạng da và nhu cầu che phủ để tư vấn cách xử lý nền.</p></article><article><h3>Rõ giá<br>trước buổi hẹn</h3><p>Trao đổi chi phí, phần làm tóc và các khoản tính thêm khi tư vấn.</p></article></div></div></section>
@@ -143,6 +149,16 @@
   </main>
   <footer class="site-footer dark-section"><div class="container footer-inner"><a class="brand" href="#top"><span class="monogram" aria-hidden="true">T<span>t</span><i>✧</i></span><span class="brand-name">TUYETTRUONG<small>MAKE UP</small></span></a><p>Đúng gu bạn thích, tôn nét riêng.<br>Makeup tiệc · Kỷ yếu · Cô dâu tại Đà Nẵng</p><a href="tel:0776992703">Gọi Tuyết <span>↗</span></a></div></footer>
   <aside class="floating-contact" aria-label="Liên hệ nhanh"><a id="quick-consult" href="#lien-he" aria-label="Tư vấn đặt lịch"><img src="assets/zalo.svg" alt="" width="39" height="39"></a><a href="tel:0776992703" aria-label="Gọi 0776 992 703"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2c1.1.4 2.3.6 3.6.6a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.6 3.6a1 1 0 0 1-.2 1z"/></svg></span></a></aside>
+  <dialog class="gallery-lightbox" id="gallery-lightbox" aria-label="Album makeup">
+    <button type="button" class="gallery-lightbox__close" data-close-gallery-lightbox aria-label="Đóng ảnh">&times;</button>
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--prev" data-gallery-prev aria-label="Ảnh trước">&#10094;</button>
+    <figure class="gallery-lightbox__figure">
+      <img class="gallery-lightbox__img" alt="" />
+      <figcaption class="gallery-lightbox__caption" aria-live="polite"></figcaption>
+    </figure>
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--next" data-gallery-next aria-label="Ảnh sau">&#10095;</button>
+  </dialog>
+
   <dialog id="lightbox" class="lightbox" aria-labelledby="lightbox-title">
       <button class="dialog-close" type="button" aria-label="Đóng ảnh" autofocus>×</button>
       <div class="lightbox-layout">
