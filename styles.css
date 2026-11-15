@@ -237,18 +237,3 @@ dialog{border:0;color:var(--brown);background:var(--cream);box-shadow:0 20px 100
 .photo-marquee-slide:focus-visible {
     outline-offset: -4px;
 }
-
-#album-slider { position: relative; }
-.album-playback {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 1px solid #eadbc3;
-  border-radius: 99px;
-  color: #fff8ec;
-  background: #443020;
-  font-size: 12px;
-}
-.album-playback[hidden] { display: none; }
