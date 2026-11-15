@@ -425,3 +425,15 @@
 #lien-he[data-background="hau-truong"] {
   background: linear-gradient(#40271d55, #40271d33), #462a1e url('assets/form-hau-truong.webp') left bottom / cover no-repeat;
 }
+
+@media (min-width: 801px) {
+  .container,
+  .pricing .pricing-layout,
+  .occasion-layout,
+  .artist .artist-layout {
+    width: min(1400px, calc(100% - 64px));
+    max-width: 1400px;
+    margin-inline: auto;
+  }
+  .pricing .pricing-layout { transform: none; }
+}
