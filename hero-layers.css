@@ -32,10 +32,13 @@
 .hero-tagline { margin-top: 18px; }
 .hero-price { margin-block: 18px; }
 .hero-price > span { padding-block: 3px 8px; }
+.album { background: #f5ecdf url('assets/album-background.webp') center / cover no-repeat; }
+.album-description { margin: 12px 0 0; color: #705749; }
 .why { background: #f5ecdf url('assets/why-background.webp') left bottom / cover no-repeat; }
 @media (max-width: 600px) {
   .why { background-size: auto 100%; background-position: 27% bottom; }
 }
+.album-intro { align-self: center; }
 .photo img, .artist-photo img, .hero-photo #hero-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
 .hero-photo #hero-image { width: 55%; }
 .hero-photo #hero-image[hidden] { display: none; }
@@ -76,9 +79,27 @@
 .crop-bride { background-image: url('assets/shop-bridal.webp'); }
 .crop-graduation { background-image: url('assets/shop-aodai.webp'); }
 .crop-beauty { background-image: url('assets/shop-pink.webp'); }
+.album { padding-top: 42px; }
+.album .section-top { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 14px; text-align: center; }
+.album #album-title { white-space: nowrap; }
+.album .album-intro { width: 100%; min-width: 0; padding: 0; }
+.album .album-tabs { justify-content: center; }
+.album .gallery-collage { grid-template-columns: 29fr 49fr 31fr; align-items: end; width: min(84%, 907.2px); margin-inline: auto; padding-inline: 29.4px; gap: 16.8px; }
+.album .gallery-card { margin: 0; }
+.album .gallery-card .photo { height: auto; border: 2px solid #fff; outline: none; }
+.album .gallery-left .photo { aspect-ratio: .78; }
+.album .gallery-main .photo { aspect-ratio: .82; border-radius: 50% 50% 3px 3px / 40% 40% 3px 3px; }
+.album .gallery-right .photo { aspect-ratio: .8; }
 @media (max-width: 800px) {
+  .album .gallery-collage { padding-inline: 10.08px; gap: 10.08px; }
 }
 @media (max-width: 600px) {
+  .album { padding-top: 32px; }
+  .album #album-title { font-size: min(37px, 6.6vw); }
+  .album .album-tabs { column-gap: clamp(10px, 4vw, 20px); flex-wrap: wrap; }
+  .album .gallery-collage { padding-inline: 3.36px; gap: 5.04px; }
+  .album .gallery-card { grid-area: auto; max-width: none; }
+  .album .gallery-card .photo { border-width: 1px; }
 }
 @media (max-width: 800px) {
   .hero { --portrait-width: 62%; --portrait-left: -8%; }
@@ -89,6 +110,7 @@
   .hero { --portrait-width: 100%; --portrait-left: 0%; --portrait-top: 0%; background-position: 33% center; }
   .hero-photo { height: 430px; }
   .hero-photo #hero-image { width: 100%; }
+  .album { background-position: left center; }
   .hero-portrait { mask-image: none; }
   .hero-photo svg { width: 100%; }
   .hero-shade { background: linear-gradient(180deg, #3f2a2025, transparent 28%, #4c3529 55%); }

@@ -21,6 +21,8 @@
     { src: 'assets/shop-aodai-alt.webp', name: 'Tông nhẹ nhàng' },
     { src: 'assets/shop-event-alt.webp', name: 'Makeup dự tiệc' }
   ];
+  const albumSets = { all: [0, 1, 2], 'trong-treo': [6, 3, 5], 'ngot-ngao': [0, 4, 1], 'sac-sao': [1, 2, 7] };
+  let activeTab = 'all';
   let lightboxIndex = 0;
   let lightboxPhotos = [];
   let lightboxOpener;
@@ -35,6 +37,26 @@
     if (config.analyticsEnabled && Array.isArray(window.dataLayer)) {
       window.dataLayer.push({ event, landing_variant: variantKey, ...details });
     }
+  }
+  function setAlbum(tab, focus = false) {
+    if (!Object.hasOwn(albumSets, tab)) tab = 'all';
+    activeTab = tab;
+    $$('[data-tab]').forEach(button => {
+      const selected = button.dataset.tab === tab;
+      button.setAttribute('aria-selected', String(selected));
+      button.tabIndex = selected ? 0 : -1;
+      if (selected && focus) button.focus();
+    });
+    $('#album-panel').setAttribute('aria-labelledby', `tab-${tab}`);
+    $('#album-panel').classList.toggle('is-filtered', tab !== 'all');
+    $$('.gallery-card').forEach((card, i) => {
+      const photoIndex = albumSets[tab][i];
+      const photo = photos[photoIndex];
+      card.dataset.gallery = String(photoIndex);
+      card.setAttribute('aria-label', `Xem lớn mẫu ${photo.name}`);
+      setPhoto(card.querySelector('img'), photoIndex);
+    });
+
   }
   if (variant) {
     $('#hero-title').replaceChildren();
@@ -58,6 +80,19 @@
     const priority = document.querySelector(`[data-price="${variant.service}"]`);
     if (priority) { priority.classList.add('is-priority'); priority.parentElement.prepend(priority); }
   }
+  setAlbum('all');
+  $$('[data-tab]').forEach(button => {
+    button.addEventListener('click', () => { setAlbum(button.dataset.tab); track('album_tab_selected', { album: activeTab }); });
+    button.addEventListener('keydown', event => {
+      const tabs = $$('[data-tab]'); const i = tabs.indexOf(button);
+      let target;
+      if (event.key === 'ArrowRight') target = tabs[(i + 1) % tabs.length];
+      if (event.key === 'ArrowLeft') target = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (event.key === 'Home') target = tabs[0];
+      if (event.key === 'End') target = tabs[tabs.length - 1];
+      if (target) { event.preventDefault(); setAlbum(target.dataset.tab, true); }
+    });
+  });
   const feedbackTrack = $('#feedback-track');
   const feedbackSlides = [...feedbackTrack.children];
   feedbackSlides.forEach(slide => {
@@ -125,6 +160,12 @@
     $('#lightbox-title').textContent = photo.name;
     $('#lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
   }
+  $$('[data-gallery]').forEach(button => button.addEventListener('click', () => {
+    lightboxOpener = button;
+    lightboxPhotos = albumSets[activeTab].map(index => photos[index]);
+    lightboxIndex = Math.max(0, albumSets[activeTab].indexOf(Number(button.dataset.gallery)));
+    renderLightbox(); lightbox.showModal();
+  }));
   const occasionCards = $$('.occasion-card');
   occasionCards.forEach((card, index) => card.addEventListener('click', event => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
@@ -231,6 +272,14 @@
     try { await navigator.clipboard.writeText($('#request-text').value); $('#copy-status').textContent = 'Đã sao chép. Bạn gửi nội dung qua kênh đang liên hệ với Tuyết nhé.'; }
     catch { $('#request-text').focus(); $('#request-text').select(); $('#copy-status').textContent = 'Bạn nhấn giữ hoặc Ctrl+C để sao chép nội dung đã chọn.'; }
   });
+
+  const header = $('.site-header');
+  function updateHeaderBackground() {
+    header.classList.toggle('is-scrolled', window.scrollY > 0);
+  }
+  updateHeaderBackground();
+  window.addEventListener('scroll', updateHeaderBackground, { passive: true });
+  window.addEventListener('pageshow', updateHeaderBackground);
 
   // Photo marquee and lightbox from the Thao Eyelash landing page.
   (function () {
