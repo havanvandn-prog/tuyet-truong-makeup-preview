@@ -126,7 +126,7 @@
 
 .pricing.section-pad {
   padding: clamp(40px, 3.3vw, 59px) 0 clamp(52px, 5vw, 89px);
-  background: radial-gradient(ellipse at 50% 45%, #3c2316 0%, #402619 72%, #472c20 100%);
+  background: #443020;
 }
 .pricing .pricing-layout {
   width: min(94.2%, 1672px);
@@ -417,7 +417,7 @@
 .feedback-track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
 
 #lien-he[data-background="voan"] {
-  background: linear-gradient(#462a1e66, #462a1e99), #462a1e url('assets/form-voan.webp') left bottom / cover no-repeat;
+  background: linear-gradient(#44302099, #443020bb), #443020 url('assets/form-voan.webp') left bottom / cover no-repeat;
 }
 #lien-he[data-background="studio"] {
   background: radial-gradient(ellipse at 70% 45%, #815334 0%, #553323 39%, #3a2319 82%);

@@ -291,17 +291,13 @@
     const slides = [...track.children];
     const COUNT = slides.length;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let loopWidth = 0;
     let offsetPx = 0;
     let lightboxIndex = 0;
 
     const lbImg = lightbox?.querySelector(".gallery-lightbox__img");
     const lbCap = lightbox?.querySelector(".gallery-lightbox__caption");
-
-    function speedPxPerFrame() {
-      return prefersReducedMotion ? 0 : 1.5;
-    }
 
     slides.forEach(slide => {
       const copy = slide.cloneNode(true);
@@ -386,29 +382,25 @@
       if (dragPending || isDragging) finishPointerInteraction(e);
     });
 
-    function remeasure() {
-      requestAnimationFrame(measureLoop);
-    }
+    track.addEventListener("load", measureLoop, true);
+    const albumSize = new ResizeObserver(measureLoop);
+    albumSize.observe(marquee);
+    albumSize.observe(track);
 
-    if (typeof ResizeObserver !== "undefined") {
-      const ro = new ResizeObserver(() => requestAnimationFrame(remeasure));
-      ro.observe(marquee);
-    }
-    window.addEventListener("resize", () => requestAnimationFrame(remeasure), { passive: true });
-
-    function tick() {
-      if (!marquee.classList.contains("is-paused") && !track.querySelector(":focus-visible") && loopWidth > 0) {
-        offsetPx += speedPxPerFrame();
-        while (offsetPx >= loopWidth) offsetPx -= loopWidth;
+    let lastFrame;
+    function tick(now) {
+      const elapsed = Math.min(now - (lastFrame ?? now), 50);
+      lastFrame = now;
+      if (!motionPreference.matches && loopWidth > 0 && !lightbox?.open &&
+          !marquee.classList.contains("is-paused") && !track.querySelector(":focus-visible")) {
+        offsetPx = (offsetPx + 90 * elapsed / 1000) % loopWidth;
         applyOffset();
       }
       requestAnimationFrame(tick);
     }
 
-    requestAnimationFrame(() => {
-      measureLoop();
-      requestAnimationFrame(tick);
-    });
+    measureLoop();
+    requestAnimationFrame(tick);
 
     function showLightbox(index) {
       if (!lightbox || !lbImg) return;
