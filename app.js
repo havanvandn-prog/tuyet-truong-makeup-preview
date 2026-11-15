@@ -387,11 +387,25 @@
     albumSize.observe(marquee);
     albumSize.observe(track);
 
+    const playback = document.querySelector(".album-playback");
+    let userPlayback;
+    const isPlaying = () => userPlayback ?? !motionPreference.matches;
+    function updatePlaybackLabel() {
+      playback.textContent = isPlaying() ? "Tạm dừng album" : "Phát album";
+    }
+    playback.hidden = false;
+    playback.addEventListener("click", () => {
+      userPlayback = !isPlaying();
+      updatePlaybackLabel();
+    });
+    motionPreference.addEventListener("change", updatePlaybackLabel);
+    updatePlaybackLabel();
+
     let lastFrame;
     function tick(now) {
       const elapsed = Math.min(now - (lastFrame ?? now), 50);
       lastFrame = now;
-      if (!motionPreference.matches && loopWidth > 0 && !lightbox?.open &&
+      if (isPlaying() && loopWidth > 0 && !lightbox?.open &&
           !marquee.classList.contains("is-paused") && !track.querySelector(":focus-visible")) {
         offsetPx = (offsetPx + 90 * elapsed / 1000) % loopWidth;
         applyOffset();
