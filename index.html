@@ -1405,6 +1405,66 @@ html.desktop-header-zoom .site-header .brand-name small {
   .site-footer { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 }
 </style>
+<style id="compact-mobile-form-20261116">
+.booking-note-toggle, .deposit-note-mobile { display: none; }
+@media (max-width: 600px) {
+  .contact .booking-form { padding: 16px; }
+  .contact .booking-form .form-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .contact .booking-form .full-width { grid-column: 1; }
+  .contact .booking-form label { margin-bottom: 4px; }
+  .contact .booking-form input:not([type="hidden"]),
+  .contact .booking-form select {
+    height: 44px; min-height: 44px; font-size: 16px; padding: 9px 12px; line-height: 24px;
+  }
+  .contact .booking-form .date-help { display: none; }
+  .booking-note-toggle {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    width: 100%; min-height: 44px; padding: 4px 0; border: 0; border-radius: 0;
+    background: transparent; color: var(--brown); font: 400 13px/1.5 var(--sans); text-align: left;
+  }
+  .booking-note-toggle > span { font-size: 20px; line-height: 1; }
+  .booking-note-fields { display: none; }
+  .booking-note-toggle[aria-expanded="true"] + .booking-note-fields { display: block; }
+  .contact .booking-form textarea { font-size: 16px; height: 72px; min-height: 72px; }
+  .contact .booking-form .submit-button { margin-top: 10px; min-height: 44px; font-size: 15px; }
+  .contact .booking-form .deposit-note { margin-top: 10px; padding-top: 0; border: 0; }
+  .contact .booking-form .deposit-note::before { content: none; }
+  .deposit-note-desktop { display: none; }
+  .deposit-note-mobile { display: inline; }
+}
+</style>
+<style id="mobile-hero-polish-20261116">
+@media (max-width: 600px) {
+  .hero .hero-photo {
+    --portrait-headroom: 64px;
+    height: calc(clamp(360px, 115vw, 500px) + var(--portrait-headroom));
+  }
+  .hero .hero-photo .hero-portrait,
+  .hero .hero-photo #hero-image {
+    position: absolute; inset: var(--portrait-headroom) 0 auto;
+    width: 100%; height: calc(100% - var(--portrait-headroom)); object-position: center top;
+  }
+  .hero .hero-photo::before {
+    content: ""; position: absolute; inset: 0 0 auto; height: 100px;
+    background: linear-gradient(to bottom, #4c3529 0%, #4c3529f0 24%, #4c352980 60%, #4c352900 100%);
+    z-index: 2; pointer-events: none;
+  }
+  #why-title br { display: initial; }
+  main .button, .hero .button, .pricing .pricing-cta .button,
+  .artist .artist-copy .button, .contact .booking-form .submit-button,
+  .lightbox-actions .button, .site-footer .button, .request-dialog .button {
+    min-height: 55px; padding: 14px 28px; font-size: 15px;
+  }
+  .hero .button-row { flex-wrap: wrap; }
+  .hero .button-row .button {
+    flex: 0 0 auto; width: calc((100% - 10px) / 2 * 1.15);
+    max-width: 100%; min-height: 55px; padding: 14px 18.4px;
+  }
+  .pricing .pricing-cta .button { padding-inline: 38.6px; }
+  .artist .artist-copy .button { padding-inline: 35.3px; }
+  .site-footer .footer-call { min-width: 184px; }
+}
+</style>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">Đến nội dung chính</a>
@@ -1555,7 +1615,7 @@ html.desktop-header-zoom .site-header .brand-name small {
 
     <section class="process section-pad" aria-labelledby="process-title"><div class="container"><div class="process-layout"><div><p class="eyebrow">YOUR NEXT BEAUTY DATE</p><h2 id="process-title">Đặt lịch<br>trong 4 bước</h2></div><ol class="steps"><li><span>01</span><h3>Gửi ngày<br>& nhu cầu</h3><p>Dịch vụ, địa điểm và giờ cần hoàn thành.</p></li><li><span>02</span><h3>Chọn kiểu<br>& báo giá</h3><p>Trao đổi mẫu yêu thích và tổng chi phí.</p></li><li><span>03</span><h3>Xác nhận<br>& cọc 50%</h3><p>Giữ lịch sau khi hai bên đã thống nhất.</p></li><li><span>04</span><h3>Chuẩn bị<br>& đến hẹn</h3><p>Chăm sóc da trước ngày makeup, đến đúng giờ.</p></li></ol></div><p class="process-note">Khoảng 2 tiếng, đã gồm làm tóc. Gửi yêu cầu chưa đồng nghĩa giữ lịch.</p></div></section>
 
-    <section class="contact dark-section section-pad" id="lien-he" data-background="voan" aria-labelledby="contact-title"><div class="container contact-layout"><div class="contact-copy"><p class="eyebrow light">LET’S MAKE IT YOURS</p><h2 id="contact-title">Bạn có ngày hẹn,<br>Tuyết có gợi ý</h2><p>Gửi ngày cần makeup và phong cách bạn thích.<br>Tuyết Trương sẽ cùng bạn trao đổi dịch vụ,<br>chi phí và lịch hẹn.</p></div><form id="booking-form" class="booking-form"><div class="form-grid"><div><label for="name">Họ tên <span>*</span></label><input id="name" name="name" autocomplete="name" placeholder="Tên của bạn" required maxlength="100"></div><div><label for="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Số điện thoại liên hệ" required maxlength="20" pattern="[+0-9() .\-]{9,20}"></div><div><label for="service">Dịch vụ <span>*</span></label><select id="service" name="service" required><option value="">Chọn dịch vụ</option><option value="tiec">Tiệc – sự kiện</option><option value="sinh-nhat">Sinh nhật</option><option value="ky-yeu">Kỷ yếu – tốt nghiệp</option><option value="co-dau">Cô dâu</option><option value="dam-ngo">Dạm ngõ</option><option value="dam-hoi">Đám hỏi</option><option value="ba-sui">Makeup bà sui</option><option value="concept">Concept – chụp ảnh</option></select></div><div><label for="date">Ngày cần makeup <span>*</span></label><input id="date" name="date" type="date" aria-describedby="date-help" required><small id="date-help" class="date-help">Chạm vào ô để chọn ngày cần makeup.</small></div><div class="full-width"><label for="message">Mong muốn của bạn</label><textarea id="message" name="message" placeholder="Phong cách bạn thích, trang phục, số người…" rows="3" maxlength="1500"></textarea></div></div><div class="honeypot" aria-hidden="true"><label for="website">Website</label><input name="website" id="website" tabindex="-1" autocomplete="off"></div><button class="button button-brown submit-button" type="submit"><span id="submit-label">Nhận tư vấn</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p><p class="deposit-note">Lịch hẹn được xác nhận sau khi trao đổi và đặt cọc 50%.</p></form></div></section>
+    <section class="contact dark-section section-pad" id="lien-he" data-background="voan" aria-labelledby="contact-title"><div class="container contact-layout"><div class="contact-copy"><p class="eyebrow light">LET’S MAKE IT YOURS</p><h2 id="contact-title">Bạn có ngày hẹn,<br>Tuyết có gợi ý</h2><p>Gửi ngày cần makeup và phong cách bạn thích.<br>Tuyết Trương sẽ cùng bạn trao đổi dịch vụ,<br>chi phí và lịch hẹn.</p></div><form id="booking-form" class="booking-form"><div class="form-grid"><div><label for="name">Họ tên <span>*</span></label><input id="name" name="name" autocomplete="name" placeholder="Tên của bạn" required maxlength="100"></div><div><label for="phone">Số điện thoại <span>*</span></label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Số điện thoại liên hệ" required maxlength="20" pattern="[+0-9() .\-]{9,20}"></div><div><label for="service">Dịch vụ <span>*</span></label><select id="service" name="service" required><option value="">Chọn dịch vụ</option><option value="tiec">Tiệc – sự kiện</option><option value="sinh-nhat">Sinh nhật</option><option value="ky-yeu">Kỷ yếu – tốt nghiệp</option><option value="co-dau">Cô dâu</option><option value="dam-ngo">Dạm ngõ</option><option value="dam-hoi">Đám hỏi</option><option value="ba-sui">Makeup bà sui</option><option value="concept">Concept – chụp ảnh</option></select></div><div><label for="date">Ngày cần makeup <span>*</span></label><input id="date" name="date" type="date" aria-describedby="date-help" required><small id="date-help" class="date-help">Chạm vào ô để chọn ngày cần makeup.</small></div><div class="full-width booking-note"><button class="booking-note-toggle" type="button" aria-expanded="false" aria-controls="booking-note-fields">Thêm ghi chú (không bắt buộc)<span aria-hidden="true">+</span></button><div id="booking-note-fields" class="booking-note-fields"><label for="message">Mong muốn của bạn</label><textarea id="message" name="message" placeholder="Phong cách bạn thích, trang phục, số người…" rows="3" maxlength="1500"></textarea></div></div></div><div class="honeypot" aria-hidden="true"><label for="website">Website</label><input name="website" id="website" tabindex="-1" autocomplete="off"></div><button class="button button-brown submit-button" type="submit"><span id="submit-label">Nhận tư vấn</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p><p class="deposit-note"><span class="deposit-note-desktop">Lịch hẹn được xác nhận sau khi trao đổi và đặt cọc 50%.</span><span class="deposit-note-mobile">Giữ lịch sau khi xác nhận và cọc 50%.</span></p></form></div></section>
 
     <section class="faq section-pad" id="hoi-dap" aria-labelledby="faq-title"><div class="container faq-layout"><div><p class="eyebrow">Câu hỏi thường gặp (FAQs)</p><h2 id="faq-title">Trước buổi hẹn,<br> bạn muốn biết…</h2></div><div class="faq-list"><details open><summary>Chưa biết chọn kiểu makeup thì sao?</summary><p>Bạn chỉ cần chia sẻ dịp tham dự và trang phục. Tuyết Trương sẽ tư vấn theo gương mặt và sở thích của bạn.</p></details><details><summary>Da có khuyết điểm có makeup được không?</summary><p>Có. Tuyết Trương xem tình trạng da và nhu cầu che phủ để tư vấn. Độ dày lớp nền phụ thuộc làn da và mức che phủ bạn mong muốn.</p></details><details><summary>Có nhận khách tại nơi làm việc và makeup tận nơi không?</summary><p>Có nhận khách tại 37 Lê Phụng Hiểu và makeup tận nơi trong Đà Nẵng. Địa điểm cách nơi làm việc trên 4 km có phí di chuyển 50.000–100.000đ, được báo khi tư vấn.</p></details><details><summary>Một buổi makeup mất bao lâu?</summary><p>Khoảng 2 tiếng, đã gồm làm tóc. Hãy báo trước giờ cần hoàn thành để sắp xếp lịch phù hợp. Lịch sáng sớm cần trao đổi trước.</p></details><details><summary>Có nhận makeup thử và chỉnh sửa trong buổi hẹn không?</summary><p>Có nhận makeup thử, giá theo dịch vụ tương ứng; phần tóc thống nhất khi tư vấn. Trong buổi hẹn, hãy trao đổi nếu bạn muốn chỉnh màu môi, mắt hoặc tóc.</p></details><details><summary>Đổi ngày hoặc hủy lịch thế nào?</summary><p>Tiệc và sự kiện: báo trước 1–2 tuần. Cô dâu: báo trước 1–2 tháng. Khoản cọc được giữ nguyên khi đổi ngày; vui lòng liên hệ để thống nhất lịch mới. Nếu hủy lịch, khoản cọc 50% không được hoàn lại.</p></details><details><summary>Nếu Tuyết Trương không thể thực hiện lịch đã nhận?</summary><p>Bạn được hoàn lại tiền cọc và hỗ trợ giảm giá cho lần sử dụng dịch vụ tiếp theo. Mức giảm được trao đổi cụ thể.</p></details><details><summary>Phụ kiện và hoa cài tóc có cần trả lại không?</summary><p>Có. Vui lòng hoàn trả trong vòng 2 ngày sau sử dụng. Phụ kiện bị mất hoặc hỏng cần bồi hoàn theo giá trị.</p></details><details><summary>Nếu đến trễ thì sao?</summary><p>Vui lòng báo ngay cho Tuyết Trương. Thứ tự phục vụ có thể cần điều chỉnh để tránh ảnh hưởng các lịch hẹn tiếp theo.</p></details></div></div></section>
   </main>
@@ -2246,6 +2306,17 @@ window.SITE_CONFIG = Object.freeze({
   desktopPointer.addEventListener('change', updateHeaderZoom);
   updateHeaderZoom();
   watchResolution();
+})();
+</script>
+<script id="compact-mobile-form-script">
+(() => {
+  const toggle = document.querySelector('.booking-note-toggle');
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.querySelector('span').textContent = open ? '−' : '+';
+    if (open) document.querySelector('#message').focus({ preventScroll: true });
+  });
 })();
 </script>
 </body>
