@@ -1617,10 +1617,55 @@ main h2[id],
   }
 }
 </style>
-<style id="artist-portrait-minus-25">
+<style id="artist-portrait-size-and-centered-gap">
 @media (min-width: 801px) {
-  /* Preserve the text column and its position while reducing only the portrait. */
-  .artist .artist-photo { transform: scale(.75); transform-origin: left center; }
+  .artist .artist-layout {
+    grid-template-columns: fit-content(60%) minmax(0, 354.75px);
+    column-gap: 53.3333333px;
+    justify-content: center;
+    align-items: center;
+  }
+  .artist .artist-photo {
+    width: 100%; transform: none; margin-inline: 0; justify-self: center;
+  }
+}
+</style>
+<style id="gallery-large-approved">
+#gallery-lightbox[open] {
+  display: flex; align-items: center; justify-content: center;
+  inset: 0; margin: 0; width: 100vw; height: 100dvh;
+  max-width: none; max-height: none; padding: 0 72px; overflow: hidden;
+}
+#gallery-lightbox .gallery-lightbox__figure {
+  position: relative; display: block; width: max-content; max-width: 100%; margin: 0;
+}
+#gallery-lightbox .gallery-lightbox__img {
+  max-height: 96dvh; max-width: calc(100vw - 144px);
+  width: auto; height: auto; object-fit: contain; border-width: 1px;
+}
+#gallery-lightbox .gallery-lightbox__caption {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  margin: 0; padding: 4px 12px; border-radius: 99px;
+  background: #17110dc9; font: 500 14px/1.5 var(--sans); color: #fff;
+}
+#gallery-lightbox .gallery-lightbox__nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; min-width: 44px; padding: 11px;
+}
+#gallery-lightbox .gallery-lightbox__nav--prev { left: -56px; }
+#gallery-lightbox .gallery-lightbox__nav--next { right: -56px; }
+#gallery-lightbox .gallery-lightbox__nav svg { width: 22px; height: 22px; }
+#gallery-lightbox .gallery-lightbox__close {
+  top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right));
+  width: 44px; height: 44px;
+}
+
+@media (max-width: 600px) {
+  #gallery-lightbox[open] { padding: 12px; }
+  #gallery-lightbox .gallery-lightbox__img { max-width: calc(100vw - 24px); max-height: 94dvh; }
+  #gallery-lightbox .gallery-lightbox__nav--prev { left: 8px; }
+  #gallery-lightbox .gallery-lightbox__nav--next { right: 8px; }
+  
 }
 </style>
 </head>
@@ -1680,7 +1725,7 @@ main h2[id],
         </div>
         <div class="price-panel" id="price-groups" role="group" aria-label="Giá từng dịch vụ">
           <div class="price-group" id="gia-tiec" data-price="tiec"><div class="price-label">Tiệc – sự kiện</div><div class="price-options"><div><span>Không làm tóc</span><strong>350.000đ</strong></div><div><span>Kèm làm tóc</span><strong>400.000 / 500.000 / 600.000đ</strong></div></div></div><div class="price-group" id="gia-ky-yeu" data-price="ky-yeu"><div class="price-label">Kỷ yếu – tốt nghiệp</div><div class="price-options"><div><span>Không làm tóc</span><strong>350.000đ</strong></div><div><span>Kèm làm tóc</span><strong>400.000 / 500.000 / 600.000đ</strong></div></div></div>
-          <div class="price-group single-price" id="gia-co-dau" data-price="co-dau"><div class="price-label">Cô dâu</div><strong>1.800.000–2.000.000đ</strong></div><div class="price-group single-price"><div class="price-label">Dạm ngõ</div><strong>700.000đ</strong></div><div class="price-group single-price"><div class="price-label">Đám hỏi</div><strong>1.000.000đ</strong></div><div class="price-group single-price" id="gia-ba-sui"><div class="price-label">Makeup bà sui</div><strong>500.000đ</strong></div>
+          <div class="price-group single-price" id="gia-co-dau" data-price="co-dau"><div class="price-label">Cô dâu</div><strong>1.800.000–2.000.000đ</strong></div><div class="price-group single-price"><div class="price-label">Dạm ngõ</div><strong>700.000đ</strong></div><div class="price-group single-price"><div class="price-label">Đám hỏi</div><strong>1.000.000đ</strong></div><div class="price-group single-price" id="gia-ba-sui"><div class="price-label">Makeup bà sui</div><strong>600.000đ</strong></div>
         </div>
         <div class="pricing-sidebar">
           <div class="price-notes">
@@ -1802,15 +1847,15 @@ main h2[id],
  <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--next" data-feedback-next aria-label="Ảnh sau">❯</button>
 </dialog>
 
-<dialog class="gallery-lightbox" id="gallery-lightbox" aria-label="Album makeup">
-    <button type="button" class="gallery-lightbox__close" data-close-gallery-lightbox aria-label="Đóng ảnh">&times;</button>
-    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--prev" data-gallery-prev aria-label="Ảnh trước">&#10094;</button>
-    <figure class="gallery-lightbox__figure">
-      <img class="gallery-lightbox__img" alt="" />
-      <figcaption class="gallery-lightbox__caption" aria-live="polite"></figcaption>
-    </figure>
-    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--next" data-gallery-next aria-label="Ảnh sau">&#10095;</button>
-  </dialog>
+<dialog class="gallery-lightbox" id="gallery-lightbox" aria-label="Album ảnh makeup">
+  <button type="button" class="gallery-lightbox__close" data-close-gallery-lightbox aria-label="Đóng ảnh">&times;</button>
+  <figure class="gallery-lightbox__figure">
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--prev" data-gallery-prev aria-label="Ảnh trước"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <img class="gallery-lightbox__img" alt="" />
+    <figcaption class="gallery-lightbox__caption" aria-live="polite"></figcaption>
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--next" data-gallery-next aria-label="Ảnh sau"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </figure>
+</dialog>
 
   <dialog id="lightbox" class="lightbox" aria-labelledby="lightbox-title">
       <button class="dialog-close" type="button" aria-label="Đóng ảnh" autofocus>×</button>
