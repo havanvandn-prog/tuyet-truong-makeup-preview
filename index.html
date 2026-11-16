@@ -845,46 +845,6 @@ nav .nav-cta { min-height: 42px; padding: 10px 20px; font-size: 13px; }
   .full-width { grid-column: 1; }
   .pricing .price-notes, .contact .booking-form { padding: 18px; }
 }
-
-/* Target 110.561 device pixels, including the border, across desktop browser zoom levels. */
-html.desktop-header-zoom .site-header {
-  zoom: var(--header-inverse-zoom, 1);
-  box-sizing: border-box;
-  height: 110.561px;
-  min-height: 110.561px;
-}
-html.desktop-header-zoom .site-header .header-inner {
-  width: var(--header-aligned-width);
-  max-width: none;
-  margin-inline: auto;
-  height: 109.561px;
-  min-height: 109.561px;
-  gap: 24px;
-}
-html.desktop-header-zoom .site-header .brand { gap: 13px; }
-html.desktop-header-zoom .site-header .monogram {
-  width: 60px; height: 57px; font-size: 62px;
-}
-html.desktop-header-zoom .site-header .monogram > span {
-  left: 20px; top: 13px; font-size: 55px;
-}
-html.desktop-header-zoom .site-header .monogram > i { font-size: 20px; }
-html.desktop-header-zoom .site-header .brand-name { font-size: 20px; }
-html.desktop-header-zoom .site-header .brand-name small {
-  font-size: 9px; margin-top: 5px; letter-spacing: 5px;
-}
-html.desktop-header-zoom .site-header .menu-toggle { display: none; }
-html.desktop-header-zoom .site-header nav {
-  position: static; display: flex; flex-direction: row;
-  width: auto; max-height: none; overflow: visible;
-  padding: 0; background: transparent; box-shadow: none;
-  align-items: center; gap: 20px; font-size: 13px;
-}
-html.desktop-header-zoom .site-header nav > a { padding: 12px 0; }
-html.desktop-header-zoom .site-header nav .nav-cta {
-  min-height: 42px; margin-top: 0;
-  padding: 10px 20px; font-size: 13px;
-}
 </style>
 
 <style id="center-button-labels">
@@ -1019,28 +979,6 @@ main h2[id],
 </style>
 
 <style id="header-centered-navigation">
-html.desktop-header-zoom .site-header .header-inner {
-  position: relative;
-}
-html.desktop-header-zoom .site-header nav {
-  display: contents;
-}
-html.desktop-header-zoom .site-header .header-menu-links {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  font-size: 16px;
-  white-space: nowrap;
-}
-html.desktop-header-zoom .site-header .header-menu-links > a {
-  padding: 12px 0;
-}
-html.desktop-header-zoom .site-header nav .nav-cta {
-  margin-left: auto;
-}
 .header-menu-links { display: contents; }
 .header-menu-links > a { padding: 13px 8px; }
 </style>
@@ -1351,9 +1289,7 @@ html.desktop-header-zoom .site-header nav .nav-cta {
 }
 </style>
 <style id="mobile-release-20261116">
-.brand-mark { display: block; flex: 0 0 auto; width: 48px; height: 58px; }
-.brand-name small,
-html.desktop-header-zoom .site-header .brand-name small {
+.brand-mark { display: block; flex: 0 0 auto; width: 48px; height: 58px; }.brand-name small {
   font: 11px/1.4 var(--serif); letter-spacing: .45px; white-space: nowrap; margin-top: 6px;
 }
 @media (max-width: 800px) {
@@ -1491,9 +1427,12 @@ html.desktop-header-zoom .site-header .brand-name small {
 <style id="desktop-pricing-text-15">
 @media (min-width: 1025px) {
   .pricing .price-panel .price-label { font-size: 20.4px; }
-  .pricing .price-panel .price-options > div { font-size: 11.9px; }
+}
+@media (min-width: 1024px) {
+  .pricing .price-panel .price-options > div,
+  .pricing .price-panel .price-options > div > span,
   .pricing .price-panel .price-options strong,
-  .pricing .price-panel .single-price > strong { font-size: 15.3px; }
+  .pricing .price-panel .single-price > strong { font-size: 14px; }
 }
 </style>
 <style id="gallery-navigation-arrow-icons">
@@ -1505,11 +1444,6 @@ html.desktop-header-zoom .site-header .brand-name small {
 </style>
 <style id="html2-local-working-updates">
 @media (min-width: 1280px) {
-  html.desktop-header-zoom .site-header .header-menu-links { font-size: 20px; gap: 73px; }
-  html.desktop-header-zoom .site-header nav .nav-cta {
-    border: 1px solid transparent; box-sizing: border-box; width: 160px; min-width: 160px; min-height: 46px; padding: 12px 24px;
-    font-size: 14px; line-height: 1.45; white-space: nowrap;
-  }
 }
 
 @media (min-width: 801px) {
@@ -1572,11 +1506,6 @@ html.desktop-header-zoom .site-header .brand-name small {
   }
   .contact .booking-form { margin: 0; }
   .contact .contact-copy { min-width: 0; }
-  html.desktop-header-zoom .site-header nav .nav-cta {
-    box-sizing: border-box; border: 1px solid transparent;
-    width: 160px; min-width: 160px; min-height: 46.3px;
-    padding: 12px 24px; font-size: 14px; line-height: 1.45; white-space: nowrap;
-  }
 }
 @media (max-width: 800px) {
   .contact .booking-form { margin-top: 20px; }
@@ -1638,6 +1567,60 @@ html.desktop-header-zoom .site-header .brand-name small {
 .occasions .occasion-caption { font-size: 17px; }
 @media (max-width: 680px) {
   .occasions .occasion-caption { font-size: 15.3px; }
+}
+</style>
+<style id="header-native-browser-zoom">/* 14.6667 CSS px at 100% renders as 22px at browser zoom 150%. */
+@media (min-width: 1024px) {
+  html { --header-height: 80px; }
+  .site-header .header-inner {
+    position: relative; width: min(1400px, calc(100% - 64px));
+    min-height: 79px; margin-inline: auto; gap: 24px;
+  }
+  .site-header nav { display: contents; }
+  .site-header .header-menu-links {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 46.6666667px;
+    font-size: 14.6666667px; white-space: nowrap;
+  }
+  .site-header .header-menu-links > a { padding: 12px 0; }
+  .site-header nav .nav-cta {
+    margin-left: auto; box-sizing: border-box; border: 1px solid transparent;
+    width: 160px; min-width: 160px; min-height: 46.3px;
+    padding: 12px 24px; font-size: 14px; line-height: 1.45; white-space: nowrap;
+  }
+  .site-header .menu-toggle { display: none; }
+}
+@media (max-width: 1023px) {
+  html { --header-height: 77px; }
+  .site-header .header-inner { min-height: 76px; }
+  .site-header .menu-toggle {
+    display: flex; flex-direction: column; justify-content: center; gap: 6px;
+    background: none; border: 1px solid #e3cbb159; border-radius: 50%;
+    width: 42px; height: 42px; padding: 12px; flex-shrink: 0;
+  }
+  .site-header .menu-toggle span { height: 1px; width: 16px; background: var(--cream); }
+  .site-header nav {
+    display: none; position: absolute; top: 100%; left: 0; width: 100%;
+    max-height: calc(100dvh - var(--header-height)); overflow-y: auto;
+    padding: 20px 24px; background: var(--brown-dark); box-shadow: var(--shadow);
+    font-size: 14px; flex-direction: column; align-items: stretch; gap: 2px;
+  }
+  .site-header nav.is-open { display: flex; }
+  .site-header .header-menu-links {
+    display: flex; position: static; transform: none; flex-direction: column;
+    align-items: stretch; gap: 2px; font-size: 14px;
+  }
+  .site-header .header-menu-links > a { padding: 13px 8px; }
+  .site-header nav .nav-cta {
+    width: 100%; min-width: 0; margin-top: 8px; padding: 12px 18px;
+    font-size: 15px; justify-content: center;
+  }
+}
+</style>
+<style id="artist-portrait-minus-25">
+@media (min-width: 801px) {
+  /* Preserve the text column and its position while reducing only the portrait. */
+  .artist .artist-photo { transform: scale(.75); transform-origin: left center; }
 }
 </style>
 </head>
@@ -2468,49 +2451,7 @@ window.SITE_CONFIG = Object.freeze({
   })();
 })();
 </script>
-<script id="desktop-header-zoom">
-(() => {
-  const root = document.documentElement;
-  const desktopPointer = matchMedia('(hover: hover) and (pointer: fine)');
-  let resolutionQuery;
 
-  function watchResolution() {
-    resolutionQuery?.removeEventListener("change", onResolutionChange);
-    resolutionQuery = matchMedia("(resolution: " + window.devicePixelRatio + "dppx)");
-    resolutionQuery.addEventListener("change", onResolutionChange);
-  }
-
-  function onResolutionChange() {
-    updateHeaderZoom();
-    watchResolution();
-  }
-
-  function updateHeaderZoom() {
-    const desktop = desktopPointer.matches && screen.width >= 1024;
-    root.classList.toggle('desktop-header-zoom', desktop);
-    if (!desktop) {
-      root.style.removeProperty('--header-height');
-      root.style.removeProperty('--header-inverse-zoom');
-      root.style.removeProperty('--header-aligned-width');
-      return;
-    }
-    // DPR includes browser zoom and display scaling, mapping CSS px to device px.
-    const ratio = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
-    root.style.setProperty('--header-inverse-zoom', String(1 / ratio));
-    root.style.setProperty('--header-height', (110.561 / ratio) + 'px');
-    const content = document.querySelector('main .why .container');
-    if (content) {
-      // Compensate the inner width for the header's inverse zoom.
-      const contentWidth = content.getBoundingClientRect().width;
-      root.style.setProperty('--header-aligned-width', (contentWidth * ratio) + 'px');
-    }
-  }
-  window.addEventListener('resize', updateHeaderZoom);
-  desktopPointer.addEventListener('change', updateHeaderZoom);
-  updateHeaderZoom();
-  watchResolution();
-})();
-</script>
 <script id="compact-mobile-form-script">
 (() => {
   const toggle = document.querySelector('.booking-note-toggle');
