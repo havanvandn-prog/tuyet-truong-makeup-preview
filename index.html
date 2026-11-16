@@ -1488,6 +1488,14 @@ html.desktop-header-zoom .site-header .brand-name small {
   line-height: 1.7;
 }
 </style>
+<style id="desktop-pricing-text-15">
+@media (min-width: 1025px) {
+  .pricing .price-panel .price-label { font-size: 20.4px; }
+  .pricing .price-panel .price-options > div { font-size: 11.9px; }
+  .pricing .price-panel .price-options strong,
+  .pricing .price-panel .single-price > strong { font-size: 15.3px; }
+}
+</style>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">Đến nội dung chính</a>
@@ -2111,6 +2119,8 @@ window.SITE_CONFIG = Object.freeze({
 
     let motion;
     let inView = false;
+    let returningFromLightbox = false;
+    let restoredSlideFocus = null;
     const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
     const SPEED = 90;
     function readOffset() {
@@ -2118,8 +2128,10 @@ window.SITE_CONFIG = Object.freeze({
     }
     function updatePlayback() {
       if (!motion) return;
+      const focusedSlide = track.querySelector(':focus-visible');
+      const keyboardFocus = focusedSlide && focusedSlide !== restoredSlideFocus;
       const paused = document.hidden || !inView || motionPreference.matches || lightbox?.open ||
-        marquee.classList.contains('is-paused') || track.querySelector(':focus-visible');
+        marquee.classList.contains('is-paused') || keyboardFocus;
       if (paused) motion.pause(); else if (motion.playState !== 'running') motion.play();
     }
     function measureLoop() {
@@ -2146,8 +2158,20 @@ window.SITE_CONFIG = Object.freeze({
     }).observe(marquee);
     document.addEventListener('visibilitychange', updatePlayback);
     motionPreference.addEventListener('change', updatePlayback);
-    lightbox?.addEventListener('close', updatePlayback);
-    track.addEventListener('focusout', () => requestAnimationFrame(updatePlayback));
+    lightbox?.addEventListener('close', () => {
+      // The dialog returns focus to its opener; that restoration is not a new keyboard interaction.
+      restoredSlideFocus = track.contains(document.activeElement) ? document.activeElement : null;
+      returningFromLightbox = false;
+      updatePlayback();
+    });
+    track.addEventListener('keydown', () => {
+      restoredSlideFocus = null;
+      updatePlayback();
+    });
+    track.addEventListener('focusout', () => {
+      restoredSlideFocus = null;
+      requestAnimationFrame(updatePlayback);
+    });
 
     let dragPending = false;
     let isDragging = false;
@@ -2227,7 +2251,10 @@ window.SITE_CONFIG = Object.freeze({
       lbImg.src = slides[lightboxIndex].firstElementChild.src;
       lbImg.alt = `Ảnh makeup ${lightboxIndex + 1}`;
       if (lbCap) lbCap.textContent = `${lightboxIndex + 1} / ${COUNT}`;
-      if (!lightbox.open) lightbox.showModal();
+      if (!lightbox.open) {
+        returningFromLightbox = true;
+        lightbox.showModal();
+      }
       updatePlayback();
     }
 
@@ -2237,6 +2264,7 @@ window.SITE_CONFIG = Object.freeze({
     });
 
     track.addEventListener("focusin", (event) => {
+      if (returningFromLightbox) return;
       const slide = event.target.closest("[data-gallery-index]");
       if (slide?.matches(":focus-visible")) {
         marquee.scrollLeft = 0;
