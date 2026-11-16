@@ -1513,7 +1513,12 @@ main h2[id],
 }
 </style>
 <style id="feedback-native-motion-and-artist-centered">
-#feedback .feedback-slider { overflow: hidden; touch-action: pan-y; }
+#feedback .feedback-slider {
+  overflow: hidden;
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 64px);
+  mask-image: linear-gradient(to right, transparent, #000 64px);
+}
 #feedback .feedback-track {
   display: flex; width: max-content; overflow: visible; gap: var(--feedback-gap);
   will-change: transform; touch-action: pan-y; scroll-snap-type: none;
@@ -1621,7 +1626,7 @@ main h2[id],
 @media (min-width: 801px) {
   .artist .artist-layout {
     grid-template-columns: fit-content(60%) minmax(0, 354.75px);
-    column-gap: 53.3333333px;
+    column-gap: 86.6666667px;
     justify-content: center;
     align-items: center;
   }
@@ -1666,6 +1671,48 @@ main h2[id],
   #gallery-lightbox .gallery-lightbox__nav--prev { left: 8px; }
   #gallery-lightbox .gallery-lightbox__nav--next { right: 8px; }
   
+}
+</style>
+<style id="primary-cta-hero-size">
+.hero .button-row .button-cream,
+.pricing .pricing-cta .button,
+.artist .artist-copy .button,
+.contact .booking-form .submit-button,
+.lightbox-actions .button-brown,
+.site-header nav .nav-cta {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 160px;
+  min-width: 0;
+  max-width: 100%;
+  height: 46.3px;
+  min-height: 46.3px;
+  padding: 12px 24px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  font: 500 14px/1.45 var(--sans);
+  white-space: nowrap;
+}
+.contact .booking-form .submit-button {
+  display: flex;
+  margin-inline: auto;
+}
+@media (max-width: 600px) {
+  .hero .button-row .button-cream,
+  .pricing .pricing-cta .button,
+  .artist .artist-copy .button,
+  .contact .booking-form .submit-button,
+  .lightbox-actions .button-brown,
+  .site-header nav .nav-cta {
+    width: calc((100vw - 50px) / 2 * 1.15);
+    height: 55px;
+    min-height: 55px;
+    padding: 14px 18.4px;
+    font-size: 15px;
+  }
 }
 </style>
 </head>
@@ -1981,7 +2028,7 @@ window.SITE_CONFIG = Object.freeze({
   const feedbackSlides = [...feedbackTrack.children];
   const feedbackViewport = feedbackTrack.parentElement;
   const feedbackDialog = $('#feedback-lightbox');
-  const feedbackSpeed = 25;
+  const feedbackSpeed = 35;
   let feedbackMotion;
   let feedbackCycleWidth = 0;
   let feedbackVisible = false;
